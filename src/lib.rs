@@ -101,6 +101,10 @@ pub fn sql_crud_derive(input: TokenStream) -> TokenStream {
     let mut primary_keys = Vec::new();
 
     for field in &fields {
+        if field.attrs.iter().any(|a| a.path.is_ident("none")) {
+            continue;
+        }
+
         let field_name = field.ident.as_ref().unwrap().to_string();
         let sql_type = field
             .attrs
